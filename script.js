@@ -74,3 +74,39 @@
 // Higher order functions: Function that receives another function as an argument,
 // that returns a new function or both.
 // eg. addEventListener
+
+const oneWord = str => {
+  return str.replace(/ /g, '').toLowerCase()
+}
+
+// Beautifully written
+const upperFirstWord = str => {
+  // rest parameter, destructuring at the left side
+  const [ first, ...others ] = str.split(' ')
+  return [ first.toUpperCase(), ...others ].join(' ')
+}
+
+const transformer = (str, fn) => {
+  console.log(`Original string: ${str}`)
+  console.log(`Transformed string: ${fn(str)}`)
+  console.log('Function:', fn)
+  console.log('Function name:', fn.name)
+}
+
+transformer('Javascript is the best', oneWord)
+transformer('Javascript is the best', upperFirstWord)
+
+// Advantages of these callback functions
+// 1. Most important: Abstraction ==> transformer function does not care about 
+// how the string is transformed. That job is delegated to the lower level functions.
+// That's the reason these are called higher-order functions.
+// Similarily addEventListener does not care about what will happen when the event
+// actually occurs.
+
+// JS uses callbacks all the time
+const high5 = () => {
+  console.log('👋🏻')
+}
+
+document.body.addEventListener('click', high5)
+['Jonas', 'Martin', 'Gary'].forEach(high5)
