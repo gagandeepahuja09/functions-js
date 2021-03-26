@@ -63,50 +63,75 @@
 
 
 
-// PART 3: First Class And Higher Order Functions
-// Functions as first class citizens ===> Just another type of object.
-// 1. Store functions in variables or object properties.
-// 2. Pass methods as arguments to other functions
-// 3. Return functions from other functions.
-// 4. Call methods on other functions. ==> counter.inc.bind(someOtherObject)
-// counter.inc is the function and we are calling bind on that function.
+// // PART 3: First Class And Higher Order Functions
+// // Functions as first class citizens ===> Just another type of object.
+// // 1. Store functions in variables or object properties.
+// // 2. Pass methods as arguments to other functions
+// // 3. Return functions from other functions.
+// // 4. Call methods on other functions. ==> counter.inc.bind(someOtherObject)
+// // counter.inc is the function and we are calling bind on that function.
 
-// Higher order functions: Function that receives another function as an argument,
-// that returns a new function or both.
-// eg. addEventListener
+// // Higher order functions: Function that receives another function as an argument,
+// // that returns a new function or both.
+// // eg. addEventListener
 
-const oneWord = str => {
-  return str.replace(/ /g, '').toLowerCase()
-}
 
-// Beautifully written
-const upperFirstWord = str => {
-  // rest parameter, destructuring at the left side
-  const [ first, ...others ] = str.split(' ')
-  return [ first.toUpperCase(), ...others ].join(' ')
-}
+// PART 4: Functions accepting callback functions
+// const oneWord = str => {
+//   return str.replace(/ /g, '').toLowerCase()
+// }
 
-const transformer = (str, fn) => {
-  console.log(`Original string: ${str}`)
-  console.log(`Transformed string: ${fn(str)}`)
-  console.log('Function:', fn)
-  console.log('Function name:', fn.name)
-}
+// // Beautifully written
+// const upperFirstWord = str => {
+//   // rest parameter, destructuring at the left side
+//   const [ first, ...others ] = str.split(' ')
+//   return [ first.toUpperCase(), ...others ].join(' ')
+// }
 
-transformer('Javascript is the best', oneWord)
-transformer('Javascript is the best', upperFirstWord)
+// const transformer = (str, fn) => {
+//   console.log(`Original string: ${str}`)
+//   console.log(`Transformed string: ${fn(str)}`)
+//   console.log('Function:', fn)
+//   console.log('Function name:', fn.name)
+// }
 
-// Advantages of these callback functions
-// 1. Most important: Abstraction ==> transformer function does not care about 
-// how the string is transformed. That job is delegated to the lower level functions.
-// That's the reason these are called higher-order functions.
-// Similarily addEventListener does not care about what will happen when the event
-// actually occurs.
+// transformer('Javascript is the best', oneWord)
+// transformer('Javascript is the best', upperFirstWord)
 
-// JS uses callbacks all the time
-const high5 = () => {
-  console.log('👋🏻')
-}
+// // Advantages of these callback functions
+// // 1. Most important: Abstraction ==> transformer function does not care about 
+// // how the string is transformed. That job is delegated to the lower level functions.
+// // That's the reason these are called higher-order functions.
+// // Similarily addEventListener does not care about what will happen when the event
+// // actually occurs.
+// // 2. Break up into functions, helping code readability.
 
-document.body.addEventListener('click', high5)
-['Jonas', 'Martin', 'Gary'].forEach(high5)
+// // JS uses callbacks all the time
+// const high5 = () => {
+//   console.log('👋🏻')
+// }
+
+// document.body.addEventListener('click', high5)
+// ['Jonas', 'Martin', 'Gary'].forEach(high5)
+
+
+// PART 5: Functions returning functions
+// Where are they used? 
+// In functional programming
+// How and why? Don't know
+
+// const greet = greeting => {
+//   return name => {
+//     console.log(`${greeting} ${name}`)
+//   }
+// }
+
+
+const greet = greeting => name => console.log(`${greeting} ${name}`)
+
+const greetHey = greet('Hey')
+greetHey('Gary')
+greetHey('Jonas')
+
+greet('Hello')('World')
+greet('Yo')('Guys')
