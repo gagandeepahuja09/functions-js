@@ -255,7 +255,7 @@
 // console.log(addVAT2(200))
 
 ///////////////////////////////////////
-// Coding Challenge #1
+// PART 8: Coding Challenge #1
 
 /* 
 Let's build a simple poll app!
@@ -282,36 +282,86 @@ GOOD LUCK 😀
 */
 
 
-const poll = {
-  question: 'Which is your favourite programming language?',
-  options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
-  answers: new Array(4).fill(0),
+// const poll = {
+//   question: 'Which is your favourite programming language?',
+//   options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
+//   answers: new Array(4).fill(0),
 
-  registerNewAnswer() {
-    // Get answer
-    const answer = Number(
-      prompt(
-        `${this.question}\n${this.options.join('\n')}`
-      )
-    )
-    console.log(answer)
+//   registerNewAnswer() {
+//     // Get answer
+//     const answer = Number(
+//       prompt(
+//         `${this.question}\n${this.options.join('\n')}`
+//       )
+//     )
+//     console.log(answer)
 
-    // Register the answer
-    typeof answer === 'number' && answer < this.answers.length && this.answers[answer]++
-    console.log(this.answers)
-    this.displayResults()
-    this.displayResults('string')
-  },
-  displayResults(type = 'array') {
-    if (type === 'array') {
-      console.log(this.answers)
-    } else if (type === 'string') {
-      console.log(`Result is ${this.answers.join(', ')}`)
-    }
+//     // Register the answer
+//     typeof answer === 'number' && answer < this.answers.length && this.answers[answer]++
+//     console.log(this.answers)
+//     this.displayResults()
+//     this.displayResults('string')
+//   },
+//   displayResults(type = 'array') {
+//     if (type === 'array') {
+//       console.log(this.answers)
+//     } else if (type === 'string') {
+//       console.log(`Result is ${this.answers.join(', ')}`)
+//     }
+//   }
+// }
+
+// document.querySelector('.poll').addEventListener('click', poll.registerNewAnswer.bind(poll))
+
+// // Bonus part
+// poll.displayResults.call({ answers: [5, 2, 3] }, 'string')
+
+// PART 9: IIFE(Immediately Invoked Function Expressions)
+// Not used often in modern JS
+// Was more of a design pattern than a feature for data privacy as all variables inside would have
+// a function scope. But in modern JS, we can acheive the same using block scope.
+// Covering with bracket will trick a function --> to be considered as an expression and can be called immediately
+// There is also another use case of it in async await
+
+// (() => {
+//   const privateNum = 23
+//   console.log('This will never be used again', privateNum)
+// })()
+
+// {
+//   const privateNum = 23
+//   console.log('Blocks', privateNum)
+// }
+
+// PART 10: CLOSURES
+// A closure gives a function access to all variables of its parent function, even after parent function
+// is returned. That is even though the parent function is now not a part of the call stack.
+// In the example we would have thought that since the execution context of the parent function was
+// gone from the call stack, it won't be accessible.
+
+// The function keeps a reference to its outer scope, which preserves the scope chain throughout time.
+
+// We don't have to manually create closures. This is just a property which happens.
+// We can't access closed over variables explicitly
+// They are not in a tangible JS object.
+// But we can take a look at this internal property [[]] using console.dir(booker)
+// [[]] ==> internal property which can't be accessed through code
+// In this we can check the scopes property.
+
+// NOTE: Closure has higher priority over scope chain. So if there was a variable passengerCount in
+// global scope then also closure would have higher priority.
+
+const secureBooking = () => {
+  let passengerCount = 0
+  return () => {
+    passengerCount++
+    console.log(`Passenger count ${passengerCount}`)
   }
 }
 
-document.querySelector('.poll').addEventListener('click', poll.registerNewAnswer.bind(poll))
+const booker = secureBooking()
 
-// Bonus part
-poll.displayResults.call({ answers: [5, 2, 3] }, 'string')
+booker()
+booker()
+console.dir(booker)
+booker()
