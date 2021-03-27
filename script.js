@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 // const bookings = []
 
@@ -127,11 +127,60 @@
 // }
 
 
-const greet = greeting => name => console.log(`${greeting} ${name}`)
+// const greet = greeting => name => console.log(`${greeting} ${name}`)
 
-const greetHey = greet('Hey')
-greetHey('Gary')
-greetHey('Jonas')
+// const greetHey = greet('Hey')
+// greetHey('Gary')
+// greetHey('Jonas')
 
-greet('Hello')('World')
-greet('Yo')('Guys')
+// greet('Hello')('World')
+// greet('Yo')('Guys')
+
+// PART 5: The call and apply methods
+// Use case: To explicitly specify the this object to be used while calling a 
+// function
+
+// Example
+const lufthansa = {
+  airline: 'Lufthansa',
+  iatacode: 'LH',
+  bookings: [],
+  // Old way
+  // book: function()
+  // New way
+  book(flightNum, name) {
+    const flight = `${this.iatacode}${flightNum}`
+    console.log(
+      `${name} booked a seat on ${this.airline}
+      flight ${flight}`
+    )
+    this.bookings.push({ flight, name })
+  }
+}
+
+lufthansa.book(2356, 'Gary')
+lufthansa.book(2357, 'Jim')
+console.log(lufthansa)
+
+const eurowings = {
+  airline: 'Eurowings',
+  iatacode: 'EW',
+  bookings: []
+}
+
+const book = lufthansa.book
+
+// Does NOT work
+// in strict mode, 'this' will be undefined
+// book(23, 'Sarah')
+
+book.call(eurowings, 23, 'Sarah')
+
+// Apply method also does the same thing, only difference being that apply
+// uses array of arguments instead of passing all the arguments.
+// Apply: not used much in mordern JS
+
+const flightData = [ 83, 'Steve' ]
+
+book.apply(eurowings, flightData)
+book.call(eurowings, ...flightData)
