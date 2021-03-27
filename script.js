@@ -136,11 +136,11 @@
 // greet('Hello')('World')
 // greet('Yo')('Guys')
 
-// PART 5: The call and apply methods
-// Use case: To explicitly specify the this object to be used while calling a 
-// function
+// // PART 5: The call and apply methods
+// // Use case: To explicitly specify the this object to be used while calling a 
+// // function
 
-// Example
+// // Example
 const lufthansa = {
   airline: 'Lufthansa',
   iatacode: 'LH',
@@ -158,9 +158,9 @@ const lufthansa = {
   }
 }
 
-lufthansa.book(2356, 'Gary')
-lufthansa.book(2357, 'Jim')
-console.log(lufthansa)
+// lufthansa.book(2356, 'Gary')
+// lufthansa.book(2357, 'Jim')
+// console.log(lufthansa)
 
 const eurowings = {
   airline: 'Eurowings',
@@ -168,19 +168,88 @@ const eurowings = {
   bookings: []
 }
 
-const book = lufthansa.book
+// const book = lufthansa.book
 
-// Does NOT work
-// in strict mode, 'this' will be undefined
-// book(23, 'Sarah')
+// // Does NOT work
+// // in strict mode, 'this' will be undefined
+// // book(23, 'Sarah')
 
-book.call(eurowings, 23, 'Sarah')
+// book.call(eurowings, 23, 'Sarah')
 
-// Apply method also does the same thing, only difference being that apply
-// uses array of arguments instead of passing all the arguments.
-// Apply: not used much in mordern JS
+// // Apply method also does the same thing, only difference being that apply
+// // uses array of arguments instead of passing all the arguments.
+// // Apply: not used much in mordern JS
 
-const flightData = [ 83, 'Steve' ]
+// const flightData = [ 83, 'Steve' ]
 
-book.apply(eurowings, flightData)
-book.call(eurowings, ...flightData)
+// book.apply(eurowings, flightData)
+// book.call(eurowings, ...flightData)
+
+
+// PART 6: Bind method
+// Similar to call method
+// But it does not immediately call the function. 
+// It returns a new function where the this keyword is bound.
+
+// Rather than using call multiple times, we can create their bound functions
+
+const { book } = lufthansa
+const bookEW = book.bind(eurowings)
+const bookLH = book.bind(lufthansa)
+
+bookEW(245, 'Sarah')
+bookLH(345, 'Emily')
+
+// We can also pass extra parameters in bind. Those will be marked as constant
+// Example: here flightNum will also be a constant now
+
+// Partial application: A part of the arguments are already applied.
+const bookEW23 = book.bind(eurowings, 23)
+bookEW23('James')
+
+// With event listeners
+lufthansa.planes = 30
+lufthansa.buyPlane = function() {
+  console.log(this)
+  this.planes++
+  console.log(this.planes)
+}
+
+// this would work, but if we use arrow function, then it will use this of the parent.
+// window object in this case
+// lufthansa.buyPlane()
+
+// In this case, the this would be point to the dom element
+// Hence we need to explicitly specify the this object using bind in the function
+// document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane)
+
+document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane.bind(lufthansa))
+
+// Partial application
+// For partially setting up some of the parameters
+// In many use cases of partial application, we don't even care about the this keyword
+
+const addTax = (rate, value) => value + value * rate
+
+console.log(addTax(.1, 200))
+
+const addVAT = addTax.bind(null, .23)
+
+console.log(addVAT(200))
+
+// this is very much different from default parameters
+// this is creating specific functions from a general function.
+
+
+// CODING Challenge implement a similar abstraction like addVAT without using bind
+const addGST = (value) => {
+  return addTax(.2, value)
+}
+
+console.log(addGST(100))
+
+// We can also do this using functions returning functions
+const addTaxRate = rate => value => value + value * rate
+
+const addVAT2 = addTaxRate(.23)
+console.log(addVAT2(200))
