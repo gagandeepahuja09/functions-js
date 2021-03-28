@@ -396,3 +396,28 @@ GOOD LUCK 😀
 // f()
 // // In scopes internal property, Closure property will only have 'b' variable as f is reassigned now.
 // console.dir(f)
+
+// Example 3
+// const boardPassengers = (numPassengers, waitSeconds) => {
+//   const perGroupCount = numPassengers / 3
+
+//   setTimeout(() => {
+//     console.log(`We are boarding all ${numPassengers} passengers`)
+//     console.log(`There are 3 groups each with ${perGroupCount} passengers`)
+//   }, waitSeconds * 1000)
+
+//   console.log(`Will start boarding in ${waitSeconds} seconds`)
+// }
+
+// const perGroupCount = 100
+// boardPassengers(909, 5)
+
+// Example 4
+(function () {
+  const header = document.querySelector('h1')
+  header.style.color = 'pink'
+  // all thanks to closures
+  document.body.addEventListener('click', () => {
+    header.style.color = 'orange'
+  })
+})()
