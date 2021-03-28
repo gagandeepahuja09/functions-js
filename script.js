@@ -351,17 +351,48 @@ GOOD LUCK 😀
 // NOTE: Closure has higher priority over scope chain. So if there was a variable passengerCount in
 // global scope then also closure would have higher priority.
 
-const secureBooking = () => {
-  let passengerCount = 0
-  return () => {
-    passengerCount++
-    console.log(`Passenger count ${passengerCount}`)
-  }
-}
+// const secureBooking = () => {
+//   let passengerCount = 0
+//   return () => {
+//     passengerCount++
+//     console.log(`Passenger count ${passengerCount}`)
+//   }
+// }
 
-const booker = secureBooking()
+// const booker = secureBooking()
+// Booker has access to passengerCount(outer scope variable environment)
+// Even after the execution context of parent function is gone.
+// booker()
+// booker()
+// console.dir(booker)
+// booker()
 
-booker()
-booker()
-console.dir(booker)
-booker()
+// Example 2
+// let f
+
+// const g = () => {
+//   const a = 23
+//   f = () => {
+//     console.log(a * 2)
+//   }
+// }
+
+// const h = () => {
+//   const b = 45
+//   f = () => {
+//     console.log(b * 3)
+//   }
+// }
+
+// // f() --> TypeError: f is not a function
+// console.dir(f)
+
+// g()
+// f()
+// // In scopes internal property, Closure property will only have 'a' variable 
+// console.dir(f)
+
+// h()
+// f()
+// // In scopes internal property, Closure property will only have 'b' variable as f is reassigned now.
+// console.dir(f)
